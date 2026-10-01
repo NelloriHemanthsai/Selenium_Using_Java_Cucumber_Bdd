@@ -1,0 +1,60 @@
+package com.redbus.pages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
+
+public class DashboardPage {
+
+    private WebDriver driver;
+
+    private By products =
+            By.cssSelector(".card-body");
+
+    private By productTitles =
+            By.cssSelector(".card-body b");
+
+
+    public DashboardPage(WebDriver driver) {
+
+        this.driver = driver;
+    }
+
+
+    public void addProductToCart(String productName) {
+    	 List<WebElement> productList =
+                 driver.findElements(products);
+
+
+         for (WebElement product : productList) {
+
+             String productTitle =
+                     product.findElement(
+                             By.cssSelector("h5 b")
+                     ).getText();
+
+
+             System.out.println(
+                     "Product found: " + productTitle
+             );
+
+
+             if (productTitle.equalsIgnoreCase(productName)) {
+
+                 WebElement addToCartButton =
+                         product.findElement(
+                                 By.xpath(
+                                     ".//button[contains(.,'Add To Cart')]"
+                                 )
+                         );
+                 
+                 addToCartButton.click();
+
+                 break;
+             }
+         }
+       
+    }
+}

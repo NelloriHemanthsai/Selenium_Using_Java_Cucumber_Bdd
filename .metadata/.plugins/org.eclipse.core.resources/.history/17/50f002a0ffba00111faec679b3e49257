@@ -1,0 +1,30 @@
+package com.redbus.tests;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+public class windowHandeling {
+	private WebDriver driver;
+	
+	@BeforeMethod
+	public void setup() {
+		
+		 driver = new ChromeDriver();
+		 driver.manage().window().maximize();
+		 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		  driver.get(
+	                "https://www.google.com/search?q=earphones+wired&sca_esv=0187de462875193d&sxsrf=APpeQnsgW2ms6ruUQPJyTvV0JtbxC4ZuQg%3A1790573370437&ei=Ovu5at3_GbLvseMP7veOoAY&biw=1536&bih=695&oq=earpho&gs_lp=Egxnd3Mtd2l6LXNlcnAiBmVhcnBobyoNCAEYgAQYigUYQxixAzINEAAYgAQYigUYQxixAzINEAAYgAQYigUYQxixAzILEAAYgAQYigUYkQIyCxAAGIAEGIoFGJECMgsQABiABBiKBRiRAjILEAAYgAQYigUYkQIyCxAAGIAEGIoFGJECMg0QABiABBiKBRhDGLEDMgUQABiABDIKEAAYgAQYigUYQ0jMSlDkCFiUNXADeAGQAQKYAcQBoAHcEqoBBDE2Lji4AQHIAQD4AQGYAgugAqEIqAIUwgIKEAAYRxjWBBiwA8ICDRAAGIAEGIoFGEMYsAPCAg4QABjkAhjWBBiwA9gBAcICFxAuGNwGGLgGGNoGGNgCGMgDGLAD2AEBwgIEECMYJ8ICCBAAGIAEGLQHwgIOEAAYgAQYsQMYgwEYtAfCAg0QLhjHARjRAxjqAhgnwgIHECMY6gIYJ8ICGRAAGIAEGIoFGEMYtAcY5wYY6gIYtALYAQHCAhYQABiABBiKBRhDGOcGGOoCGLQC2AEBwgIREAAYgAQYigUYsQMYgwEYtAfCAhQQABiABBiKBRiNBhixAxiDARi0B8ICDhAAGIAEGIoFGLEDGIMBwgIUEC4YgAQYigUYkQIYsQMYxwEY0QPCAhAQABiABBiKBRhDGLEDGIMBwgIjEC4YgAQYigUYkQIYsQMYxwEY0QMYlwUY3AQY3gQY4ATYAQHCAg4QABiABBiKBRiRAhixA8ICEBAAGIAEGIoFGAoYsQMYgwGYAwTxBUfsHW2ACYLPiAYBkAYTugYGCAEQARgJkgcDNC43oAeJsQGyBwMxLje4B5AIwgcFMC4zLjjIByqACAE&sclient=gws-wiz-serp"
+	        );
+		
+	}
+	
+	@Test
+	public void test() {
+		driver.findElement(By.className("UsGWMe")).click();
+	}
+}

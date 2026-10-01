@@ -1,0 +1,59 @@
+by using id
+
+<input id="userEmail">
+
+//tagname[@attribute='value']
+
+//input[@id='userEmail']
+
+By.xpath("//input[@id='userEmail']")
+
+by using class
+
+<div class="card-body">
+
+//div[@class='card-body']
+
+By.xpath("//div[@class='card-body']")
+
+XPath using another attribute
+
+<input placeholder="Select Country">
+
+//input[@placeholder="select Country"]
+
+By.xpath(
+    "//input[@placeholder='Select Country']"
+)
+
+XPath with multiple attributes
+
+<input
+    type="text"
+    id="username"
+    placeholder="Enter username"
+>
+
+//input[@id='username' and @type='text']
+
+or
+
+//input[@id='username' and @placeholder='Enter username']
+
+By.xpath(
+    "//input[@id='username' and @type='text']"
+);
+
+
+XPath using contains()
+
+<input id="userEmail12345">
+
+
+
+userEmail12345
+userEmail67890
+userEmail99999
+
+
+

@@ -1,0 +1,203 @@
+1. By.name()
+
+```html
+<input
+    type="text"
+    name="firstname"
+    placeholder="Enter First Name">
+```
+
+**Selenium:**
+
+```java
+
+
+WebElement firstName =
+        driver.findElement(By.name("firstname"));
+
+firstName.sendKeys("Hemanth");
+```
+
+2. By.tagName()
+
+```html
+<input
+    type="text"
+    name="firstname"
+    placeholder="Enter First Name">
+```
+
+**Selenium:**
+
+```java
+WebElement input =
+        driver.findElement(By.tagName("input"));
+
+System.out.println(
+        input.getAttribute("placeholder")
+);
+```
+
+3. By.linkText()
+
+```html
+<a href="https://example.com/java">
+    Java
+</a>
+```
+
+**Selenium:**
+
+```java
+WebElement javaLink =
+        driver.findElement(By.linkText("Java"));
+
+javaLink.click();
+```
+
+
+4. By.partialLinkText()
+
+```html
+<a href="https://example.com/testing">
+    Software Testing
+</a>
+```
+
+**Selenium:**
+
+```java
+WebElement testingLink =
+        driver.findElement(
+                By.partialLinkText("Testing")
+        );
+
+testingLink.click();
+```
+
+**Connection:**
+
+```text
+HTML:
+<a>Software Testing</a>
+
+        ↓
+
+Selenium:
+By.partialLinkText("Testing")
+```
+
+5. By.cssSelector()
+
+```html
+<input
+    type="text"
+    name="lastname"
+    placeholder="Enter Last Name">
+```
+
+**Selenium:**
+
+```java
+WebElement lastName =
+        driver.findElement(
+                By.cssSelector("input[name='lastname']")
+        );
+
+lastName.sendKeys("Nellori");
+```
+
+**Connection:**
+
+```text
+HTML:
+<input name="lastname">
+
+        ↓
+
+CSS:
+input[name='lastname']
+
+        ↓
+
+Selenium:
+By.cssSelector("input[name='lastname']")
+```
+
+
+Another By.cssSelector() example using ID
+
+HTML:
+
+```html
+<input
+    type="email"
+    id="email"
+    placeholder="Enter Email">
+```
+
+**Selenium:**
+
+```java
+WebElement email =
+        driver.findElement(
+                By.cssSelector("#email")
+        );
+
+email.sendKeys("hemanth@example.com");
+```
+
+Connection:
+
+```text
+HTML:
+id="email"
+
+    ↓
+
+CSS:
+#email
+
+    ↓
+
+Selenium:
+By.cssSelector("#email")
+```
+
+Another CSS example using class
+
+HTML:
+
+```html
+<div class="login-container">
+    Login Page
+</div>
+```
+
+**Selenium:**
+
+```java
+WebElement loginContainer =
+        driver.findElement(
+                By.cssSelector(".login-container")
+        );
+```
+
+Connection:
+
+```text
+HTML:
+class="login-container"
+
+        ↓
+
+CSS:
+.login-container
+
+        ↓
+
+Selenium:
+By.cssSelector(".login-container")
+```
+
+

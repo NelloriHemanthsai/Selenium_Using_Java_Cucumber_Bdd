@@ -1,0 +1,66 @@
+package com.redbus.tests;
+
+import java.time.Duration;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+public class windowHandeling {
+	private WebDriver driver;
+	
+	@BeforeMethod
+	public void setup() {
+		ChromeOptions options = new ChromeOptions(); 
+		// Open Chrome in Incognito mode options.addArguments("--incognito");
+		options.addArguments("--incognito");
+		 driver = new ChromeDriver(options);
+		 driver.manage().window().maximize();
+		 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		  driver.get(
+	               "https://www.hyrtutorials.com/p/window-handles-practice.html "
+	        );
+		  
+		  driver.navigate().refresh();
+		
+	}
+	
+	@Test
+	public void test() {
+		String mainwindow = driver.getWindowHandle();
+		WebElement newtabbtn = driver.findElement(By.xpath("//*[@id=\"newWindowBtn\"]"));
+		newtabbtn.click();
+		
+		Set<String> windowHandles = driver.getWindowHandles();
+		for(String mpWindows:windowHandles) {
+			if(!mpWindows.equals(mainwindow)) {
+				driver.switchTo().window(mpWindows);
+				driver.manage().window().maximize();
+				break;
+			}
+		}
+		
+		
+		
+		driver.findElement( By.id("firstName") ).sendKeys("Hemanth");
+		driver.findElement( By.id("lastName") ).sendKeys("Nellori");
+		driver.findElement( By.id("femalerb") ).click();
+		driver.findElement( By.id("englishchbx") ).click();
+		driver.findElement( By.id("email") ).sendKeys("hemanth@example.com");
+		driver.findElement( By.id("password") ).sendKeys("Test@1234");
+		driver.findElement( By.id("registerbtn") ).click();
+		
+		WebElement message = driver.findElement( By.id("msg") );
+		String actualMessage = message.getText();
+		System.out.println( "Registration Message: " + actualMessage );
+		Assert.assertTrue( message.isDisplayed(), "Registration success message is NOT displayed" ); 
+		System.out.println( "Registration successful message is displayed" );
+		driver.switchTo().window(mainwindow);
+	}
+}

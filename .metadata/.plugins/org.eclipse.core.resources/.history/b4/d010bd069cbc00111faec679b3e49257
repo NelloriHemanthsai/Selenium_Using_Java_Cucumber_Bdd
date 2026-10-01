@@ -1,0 +1,79 @@
+package com.redbus.stepdefinitions;
+
+import com.redbus.hooks.Hooks;
+import com.redbus.pages.CartPage;
+import com.redbus.pages.CheckoutPage;
+import com.redbus.pages.DashboardPage;
+import com.redbus.pages.LoginPage;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+
+public class ClientAppSteps {
+	
+    LoginPage loginPage;
+    DashboardPage dashboardPage;
+    CartPage cartPage;
+    CheckoutPage checkoutPage;
+
+    @Given("I open the client application")
+    public void openApplication() {
+
+        System.out.println(
+                "Client application opened"
+        );
+    }
+
+
+    @When("I login with valid credentials")
+    public void login() {
+
+        loginPage =
+                new LoginPage(Hooks.driver);
+
+        loginPage.login(
+                "hnellori@gmail.com",
+                "Hemu@1234"
+        );
+    }
+    
+    @When("I add product {string} to the cart")
+    public void addProduct(String productName) {
+
+        dashboardPage =
+                new DashboardPage(Hooks.driver);
+
+        dashboardPage.addProductToCart(
+                productName
+        );
+    }
+
+
+    @When("I open the cart")
+    public void openCart() {
+
+        dashboardPage.goToCart();
+    }
+    
+    @When("I click on checkout")
+    public void clickCheckout() {
+
+        cartPage =
+                new CartPage(Hooks.driver);
+
+        cartPage.clickCheckout();
+    }
+    
+    
+    @When("I select country {string}")
+    public void selectCountry(String country) {
+
+        checkoutPage =
+                new CheckoutPage(Hooks.driver);
+
+        checkoutPage.selectCountry(
+                country
+        );
+    }
+
+}

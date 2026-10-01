@@ -1,0 +1,26 @@
+package com.redbus.stepdefinitions;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+
+public class LoginSteps {
+
+    @Given("the user is on the login page")
+    public void userIsOnLoginPage() {
+
+        System.out.println("User is on login page");
+    }
+
+    @When("the user enters valid login credentials")
+    public void userEntersValidLoginCredentials() {
+
+        System.out.println("User enters valid login credentials");
+    }
+
+    @Then("the user should be logged in successfully")
+    public void userShouldBeLoggedInSuccessfully() {
+
+        System.out.println("User should be logged in successfully");
+    }
+}

@@ -1,0 +1,545 @@
+Yes. Let’s make this **industry-style Selenium + TestNG code** that demonstrates **both Hard Assertion and Soft Assertion**, while covering the important TestNG assertion types.
+
+I’ll use a realistic **login → product → cart → checkout** flow similar to the application you are already automating.
+
+### 1. Hard Assertions vs Soft Assertions
+
+| Type | Class        | Failure behavior                                  |
+| ---- | ------------ | ------------------------------------------------- |
+| Hard | `Assert`     | Test stops immediately                            |
+| Soft | `SoftAssert` | Test continues, reports failures at `assertAll()` |
+
+In real projects, you commonly use:
+
+* **Hard assertions** for critical checkpoints.
+* **Soft assertions** when you want to validate several UI elements in one test.
+
+### 2. Industrial-style example
+
+The following example covers:
+
+* `assertTrue()`
+* `assertFalse()`
+* `assertEquals()`
+* `assertNotEquals()`
+* `assertNull()`
+* `assertNotNull()`
+* `assertSame()`
+* `assertNotSame()`
+* Hard assertions
+* Soft assertions
+* `assertAll()`
+* Selenium UI validations
+
+```java
+package com.redbus.tests;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
+public class AssertionTest {
+
+    WebDriver driver;
+
+    @BeforeMethod
+    public void setup() {
+
+        driver = new ChromeDriver();
+
+        driver.manage().window().maximize();
+
+        driver.manage().timeouts()
+                .implicitlyWait(Duration.ofSeconds(10));
+
+        driver.get("https://rahulshettyacademy.com/client");
+    }
+
+
+    @Test
+    public void loginAndValidateApplication() {
+
+        // =====================================================
+        // 1. HARD ASSERTION - PAGE TITLE
+        // =====================================================
+
+        String actualTitle = driver.getTitle();
+
+        Assert.assertEquals(
+                actualTitle,
+                "Let's Shop",
+                "Page title is incorrect"
+        );
+
+
+        // =====================================================
+        // 2. HARD ASSERTION - LOGIN PAGE ELEMENT
+        // =====================================================
+
+        WebElement email =
+                driver.findElement(By.id("userEmail"));
+
+        Assert.assertNotNull(
+                email,
+                "Email field was not found"
+        );
+
+
+        // =====================================================
+        // 3. ENTER LOGIN DETAILS
+        // =====================================================
+
+        email.sendKeys("your_email");
+
+        WebElement password =
+                driver.findElement(By.id("userPassword"));
+
+        password.sendKeys("your_password");
+
+
+        // =====================================================
+        // 4. LOGIN BUTTON
+        // =====================================================
+
+        WebElement loginButton =
+                driver.findElement(By.cssSelector("[value='Login']"));
+
+        Assert.assertTrue(
+                loginButton.isDisplayed(),
+                "Login button is not displayed"
+        );
+
+        Assert.assertTrue(
+                loginButton.isEnabled(),
+                "Login button is disabled"
+        );
+
+        loginButton.click();
+
+
+        // =====================================================
+        // 5. SOFT ASSERTIONS
+        // =====================================================
+
+        SoftAssert softAssert = new SoftAssert();
+
+
+        // -----------------------------------------------------
+        // Check URL
+        // -----------------------------------------------------
+
+        String currentUrl = driver.getCurrentUrl();
+
+        softAssert.assertTrue(
+                currentUrl.contains("dashboard"),
+                "Dashboard URL is incorrect"
+        );
+
+
+        // -----------------------------------------------------
+        // Check products are displayed
+        // -----------------------------------------------------
+
+        WebElement productSection =
+                driver.findElement(By.cssSelector(".card-body"));
+
+        softAssert.assertTrue(
+                productSection.isDisplayed(),
+                "Product section is not displayed"
+        );
+
+
+        // -----------------------------------------------------
+        // Check product name
+        // -----------------------------------------------------
+
+        String productName =
+                productSection
+                        .findElement(By.cssSelector("h5 b"))
+                        .getText();
+
+        softAssert.assertNotNull(
+                productName,
+                "Product name is null"
+        );
+
+
+        softAssert.assertNotEquals(
+                productName,
+                "",
+                "Product name is empty"
+        );
+
+
+        // -----------------------------------------------------
+        // Check product name
+        // -----------------------------------------------------
+
+        softAssert.assertEquals(
+                productName,
+                "ADIDAS ORIGINAL",
+                "Incorrect product name"
+        );
+
+
+        // =====================================================
+        // 6. ASSERT FALSE
+        // =====================================================
+
+        boolean loginPageDisplayed =
+                driver.findElements(By.id("userEmail"))
+                        .size() > 0;
+
+        softAssert.assertFalse(
+                loginPageDisplayed,
+                "Login page is still displayed"
+        );
+
+
+        // =====================================================
+        // 7. ASSERT SAME / NOT SAME
+        // =====================================================
+
+        String product1 = productName;
+        String product2 = productName;
+
+        softAssert.assertSame(
+                product1,
+                product2,
+                "Both references are not the same"
+        );
+
+
+        String anotherProduct = new String("ADIDAS ORIGINAL");
+
+        softAssert.assertNotSame(
+                product1,
+                anotherProduct,
+                "Both object references are unexpectedly same"
+        );
+
+
+        // =====================================================
+        // 8. ASSERT NULL
+        // =====================================================
+
+        String testObject = null;
+
+        softAssert.assertNull(
+                testObject,
+                "Object is not null"
+        );
+
+
+        // =====================================================
+        // 9. VERY IMPORTANT
+        // =====================================================
+        // Soft assertions are reported here.
+        // Without assertAll(), SoftAssert failures
+        // may not fail the test.
+
+        softAssert.assertAll();
+    }
+
+
+    @AfterMethod
+    public void tearDown() {
+
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}
+```
+
+### 3. Understand the assertions with one simple example
+
+#### `assertEquals()`
+
+Used when **expected and actual should be exactly the same**.
+
+```java
+Assert.assertEquals(
+    driver.getTitle(),
+    "Let's Shop"
+);
+```
+
+Think:
+
+**Actual = Expected → PASS**
+
+---
+
+#### `assertNotEquals()`
+
+Used when two values **should not be equal**.
+
+```java
+Assert.assertNotEquals(
+    productName,
+    ""
+);
+```
+
+Meaning:
+
+> Product name should not be empty.
+
+---
+
+#### `assertTrue()`
+
+Used when something **must be true**.
+
+```java
+Assert.assertTrue(
+    loginButton.isDisplayed()
+);
+```
+
+Meaning:
+
+> Login button must be visible.
+
+---
+
+#### `assertFalse()`
+
+Used when something **must be false**.
+
+```java
+Assert.assertFalse(
+    loginPageDisplayed
+);
+```
+
+Meaning:
+
+> Login page should NOT be displayed after login.
+
+---
+
+#### `assertNull()`
+
+Used when something **should be null**.
+
+```java
+Assert.assertNull(testObject);
+```
+
+Example:
+
+```java
+String value = null;
+
+Assert.assertNull(value);
+```
+
+---
+
+#### `assertNotNull()`
+
+Used when something **must have a value**.
+
+Very common in automation:
+
+```java
+Assert.assertNotNull(
+    productName
+);
+```
+
+Meaning:
+
+> Product name must exist.
+
+---
+
+#### `assertSame()`
+
+This one is slightly different.
+
+It checks whether **two references point to the exact same object**.
+
+```java
+String product1 = productName;
+String product2 = productName;
+
+Assert.assertSame(product1, product2);
+```
+
+Think:
+
+**Same object/reference → PASS**
+
+This is **not commonly used for normal Selenium UI validation**.
+
+---
+
+#### `assertNotSame()`
+
+Checks that two references are **not the exact same object**.
+
+```java
+String product1 = productName;
+
+String product2 =
+    new String("ADIDAS ORIGINAL");
+
+Assert.assertNotSame(product1, product2);
+```
+
+Again, this is mainly useful for **Java object/reference testing**, not normal UI testing.
+
+---
+
+# 4. Hard assertion — industry usage
+
+Imagine:
+
+```java
+Assert.assertEquals(
+    driver.getTitle(),
+    "Let's Shop"
+);
+```
+
+If this fails:
+
+```text
+Expected: Let's Shop
+Actual:   Google
+```
+
+Test execution **stops at that point**.
+
+So use hard assertions for **critical checkpoints**:
+
+```text
+Open application
+      ↓
+Verify login page
+      ↓
+Login
+      ↓
+Verify dashboard       ← HARD ASSERTION
+      ↓
+Continue
+```
+
+If dashboard isn't loaded, there may be no reason to continue.
+
+---
+
+# 5. Soft assertion — industry usage
+
+Suppose your checkout page has:
+
+```text
+First Name
+Last Name
+Email
+Phone
+Country
+Place Order
+```
+
+You want to validate all of them.
+
+With hard assertions:
+
+```java
+Assert.assertTrue(firstName.isDisplayed());
+Assert.assertTrue(lastName.isDisplayed());
+Assert.assertTrue(email.isDisplayed());
+Assert.assertTrue(phone.isDisplayed());
+Assert.assertTrue(country.isDisplayed());
+```
+
+If `lastName` fails, the remaining checks don't execute.
+
+With `SoftAssert`:
+
+```java
+SoftAssert softAssert = new SoftAssert();
+
+softAssert.assertTrue(firstName.isDisplayed());
+softAssert.assertTrue(lastName.isDisplayed());
+softAssert.assertTrue(email.isDisplayed());
+softAssert.assertTrue(phone.isDisplayed());
+softAssert.assertTrue(country.isDisplayed());
+
+softAssert.assertAll();
+```
+
+Now Selenium checks **all five**.
+
+Think:
+
+```text
+Hard Assertion
+
+Check 1 ✓
+Check 2 ✗
+STOP
+
+
+Soft Assertion
+
+Check 1 ✓
+Check 2 ✗
+Check 3 ✓
+Check 4 ✓
+Check 5 ✓
+      ↓
+assertAll()
+      ↓
+Test reports failure
+```
+
+### Easy interview memory
+
+**Hard = STOP**
+
+**Soft = CONTINUE**
+
+**Soft + `assertAll()` = Report all failures**
+
+---
+
+## 6. Which assertions should you focus on for Selenium interviews?
+
+Remember these three first:
+
+```java
+Assert.assertEquals(actual, expected);
+Assert.assertTrue(condition);
+Assert.assertFalse(condition);
+```
+
+Then:
+
+```java
+Assert.assertNotNull(object);
+Assert.assertNull(object);
+Assert.assertNotEquals(actual, expected);
+```
+
+And understand these Java-level assertions:
+
+```java
+Assert.assertSame(object1, object2);
+Assert.assertNotSame(object1, object2);
+```
+
+For practical Selenium automation, **`assertEquals`, `assertTrue`, `assertFalse`, and `assertNotNull`** are especially common.

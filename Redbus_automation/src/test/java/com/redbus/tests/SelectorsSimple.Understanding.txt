@@ -1,0 +1,23 @@
+name="email"
+      ↓
+By.name("email")
+
+
+<input>
+      ↓
+By.tagName("input")
+
+
+<a>Java</a>
+      ↓
+By.linkText("Java")
+
+
+<a>Software Testing</a>
+      ↓
+By.partialLinkText("Testing")
+
+
+<input id="email">
+      ↓
+By.cssSelector("#email")

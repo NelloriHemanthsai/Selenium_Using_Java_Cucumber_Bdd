@@ -1,0 +1,67 @@
+1. visibilityOfElementLocated()
+
+Wait for one element to be visible.
+
+WebElement email = wait.until(
+    ExpectedConditions.visibilityOfElementLocated(
+        By.id("userEmail")
+    )
+);
+
+2. visibilityOfAllElementsLocatedBy()
+
+Wait for multiple elements to be visible.
+
+List<WebElement> products = wait.until(
+    ExpectedConditions.visibilityOfAllElementsLocatedBy(
+        By.cssSelector(".card-body")
+    )
+);
+
+3. presenceOfElementLocated()
+
+Wait until the element exists in the DOM.
+
+WebElement email = wait.until(
+    ExpectedConditions.presenceOfElementLocated(
+        By.id("userEmail")
+    )
+);
+
+4. presenceOfAllElementsLocatedBy()
+
+Wait until multiple elements exist in the DOM
+
+List<WebElement> products = wait.until(
+    ExpectedConditions.presenceOfAllElementsLocatedBy(
+        By.cssSelector(".card-body")
+    )
+);
+
+5. elementToBeClickable()
+
+Very commonly used in real projects.
+
+Wait until the element is:
+
+WebElement loginButton = wait.until(
+    ExpectedConditions.elementToBeClickable(
+        By.cssSelector("[value='Login']")
+    )
+);
+
+loginButton.click();
+
+
+6. invisibilityOfElementLocated()
+
+Wait until an element disappears.
+
+This is especially useful for loading spinners.
+
+
+wait.until(
+    ExpectedConditions.invisibilityOfElementLocated(
+        By.cssSelector(".ngx-spinner-overlay")
+    )
+);

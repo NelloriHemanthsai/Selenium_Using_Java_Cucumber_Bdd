@@ -1,0 +1,87 @@
+package com.redbus.pages;
+
+import org.openqa.selenium.By;
+import java.time.Duration;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.List;
+
+public class DashboardPage {
+
+    private WebDriver driver;
+    private WebDriverWait wait;
+
+    private By products =
+            By.cssSelector(".card-body h5 b");
+
+//    private By productTitles =
+//            By.cssSelector(".card-body b");
+
+
+    public DashboardPage(WebDriver driver) {
+
+        this.driver = driver;
+        this.wait = new WebDriverWait(
+                driver, Duration.ofSeconds(15));
+    }
+
+
+    public void addProductToCart(String productName) {
+
+        System.out.println("dashboard entered");
+
+        List<WebElement> productList =
+                driver.findElements(products);
+
+        System.out.println(
+                "product list : " + productList);
+
+        System.out.println(
+                "Products found: " + productList.size());
+
+        for (WebElement product : productList) {
+
+            System.out.println("entered for loop");
+
+            // product is already the <b> element
+            String productTitle = product.getText().trim();
+
+            System.out.println(
+                    "Product found: " + productTitle);
+
+            if (productTitle.equalsIgnoreCase(productName)) {
+
+                System.out.println(
+                        "MATCH FOUND: " + productTitle);
+
+                // Move from <b> to the parent .card-body
+                WebElement productCard =
+                        product.findElement(
+                                By.xpath(
+                                    "./ancestor::div[contains(@class,'card-body')]"
+                                )
+                        );
+
+                // Find Add To Cart inside this product card
+                WebElement addToCartButton =
+                        productCard.findElement(
+                                By.xpath(
+                                    ".//button[contains(normalize-space(.),'Add To Cart')]"
+                                )
+                        );
+
+                System.out.println(
+                        "Add To Cart button found");
+
+                addToCartButton.click();
+
+                System.out.println(
+                        "Product added to cart: " + productName);
+
+                break;
+            }
+        }
+    }
+}

@@ -1,0 +1,67 @@
+package com.redbus.pages;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.jspecify.annotations.Nullable;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class DashboardPage {
+	
+	WebDriver driver;
+	WebDriverWait wait;
+
+	public DashboardPage(WebDriver driver) {
+		// TODO Auto-generated constructor stub
+		
+		this.driver = driver;
+		
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		
+	}
+	
+	private By products = By.cssSelector(".card-body");
+	
+	private By cartButton = By.cssSelector("button[routerlink='/dashboard/cart']");
+	
+	private By spinner = By.cssSelector(".ngx-spinner-overlay");
+	
+	
+	public void AddProductToCart(String productName) {
+		
+		@Nullable
+		List<WebElement> productList = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(products));
+		
+		System.out.println("ProductList Size"+productList.size());
+		
+		for(WebElement product:productList) {
+			
+			String productNameFromPage = product.findElement(By.cssSelector("h5 b")).getText().trim();
+			
+			if(productNameFromPage.equalsIgnoreCase(productName)) {
+			    product.findElement(
+                        By.cssSelector(
+                                "button:nth-of-type(2)"
+                        )
+                ).click();
+			    
+			       // Wait for spinner to disappear
+
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(spinner));
+                
+                break;
+			}
+		}
+	}
+	
+	//open cart
+	public void goToCart() {
+		wait.until(ExpectedConditions.elementToBeClickable(cartButton)).click();
+	}
+	
+
+}

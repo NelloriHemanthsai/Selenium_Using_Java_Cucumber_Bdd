@@ -1,0 +1,136 @@
+package com.redbus.tests;
+
+
+import com.redbus.utils.ExcelUtils;
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import com.redbus.utils.ExcelUtils2;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.time.Duration;
+import java.util.List;
+
+public class ClientAppTest2 {
+	WebDriver driver;
+	
+	@BeforeMethod
+	public void setUp() {
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	      driver.get(
+	                "https://rahulshettyacademy.com/client"
+	        );
+		
+	}
+	
+	@DataProvider(name="exceldata")
+	public Object[][] gethemData() throws Exception{
+		return ExcelUtils2.getData();
+	}
+	
+	@Test(dataProvider = "exceldata")
+	public void test(String productname, String email, String password) {
+		
+//		  String productname = "ZARA COAT 3";
+		
+		//with explicit wait
+//		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+//		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("userEmail"))).sendKeys("hnellori@gmail.com");
+//
+//		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("userPassword"))).sendKeys("Hemu@1234");
+//
+//		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[value='Login']"))).click();
+		
+		
+		// with implicit wait
+	//	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+//		driver.findElement(By.id("userEmail")).sendKeys("hnellori@gmail.com");
+//		driver.findElement(By.id("userPassword")).sendKeys("Hemu@1234");
+//		driver.findElement(By.cssSelector("[value='Login']")).click();
+		
+		
+		driver.findElement(By.id("userEmail")).sendKeys(email);
+		driver.findElement(By.id("userPassword")).sendKeys(password);
+		driver.findElement(By.cssSelector("[value='Login']")).click();
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+		List<WebElement> productList = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector(".card-body")));
+		
+		System.out.println("entered and taking screen shot");
+		
+		                               TakesScreenshot screenshot = (TakesScreenshot)driver;
+		                               
+		                               File source = screenshot.getScreenshotAs(OutputType.FILE);
+		                               File file = new File("C:\\Users\\heman\\OneDrive\\Desktop\\application_Data\\screenshots\\"
+                                + productname.replace(" ", "_")
+                                + ".png");
+		                               
+		                               try {
+		                            	   FileUtils.copyFile(source, file);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+		System.out.println("taking screenshot done");
+		  System.out.println(
+	                "Products found: " + productList.size()
+	        );
+		  
+		  for(WebElement product:productList) {
+			 String productname1 = product.findElement(By.cssSelector("h5 b")).getText().trim();
+			  if(productname1.equalsIgnoreCase(productname)) {
+				  product.findElement(By.cssSelector("button:nth-of-type(2)")).click();
+				  
+				  // Wait until loading spinner disappears
+			        wait.until(
+			                ExpectedConditions.invisibilityOfElementLocated(
+			                        By.cssSelector(".ngx-spinner-overlay")
+			                )
+			        );
+			        
+				  break;
+			  }
+		  }
+		  
+		// Now wait until Cart button is clickable
+		  wait.until(
+		          ExpectedConditions.elementToBeClickable(
+		                  By.cssSelector(
+		                          "button[routerlink='/dashboard/cart']"
+		                  )
+		          )
+		  ).click(); 
+		
+		
+	}
+	
+
+	
+	
+	
+}

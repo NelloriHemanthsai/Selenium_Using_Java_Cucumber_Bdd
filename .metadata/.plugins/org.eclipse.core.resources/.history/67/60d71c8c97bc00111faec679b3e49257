@@ -1,0 +1,9 @@
+package com.redbus.pages;
+
+public class CheckoutPage {
+
+	public CheckoutPage() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

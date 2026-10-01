@@ -1,0 +1,638 @@
+package com.redbus.tests;
+
+import com.redbus.utils.ExcelUtils;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.time.Duration;
+import java.util.List;
+
+
+public class ClientAppTest1 {
+
+
+    // ============================================================
+    // DRIVER
+    // ============================================================
+    
+    // WebDriver is used to control the Chrome browser
+    private WebDriver driver;
+
+
+    // ============================================================
+    // WAIT
+    // ============================================================
+
+    // WebDriverWait is used to wait until elements are ready
+    private WebDriverWait wait;
+
+
+    // ============================================================
+    // LOGIN PAGE LOCATORS
+    // ============================================================
+
+    // Email textbox
+    private By email =
+            By.id("userEmail");
+
+
+    // Password textbox
+    private By password =
+            By.id("userPassword");
+
+
+    // Login button
+    private By loginButton =
+            By.cssSelector("[value='Login']");
+
+
+    // ============================================================
+    // DASHBOARD LOCATOR
+    // ============================================================
+
+    // Each complete product card
+    private By products =
+            By.cssSelector(".card-body");
+
+
+    // ============================================================
+    // BEFORE SUITE
+    // ============================================================
+
+    /*
+     * @BeforeSuite runs ONCE before the entire TestNG suite.
+     *
+     * Example:
+     *
+     * testng.xml
+     *     |
+     *     ├── ClientAppTest
+     *     ├── LoginTest
+     *     └── OrderTest
+     *
+     * @BeforeSuite runs before all of them.
+     */
+
+    @BeforeSuite
+    public void beforeSuite() {
+
+        System.out.println(
+                "========== BEFORE SUITE =========="
+        );
+
+        System.out.println(
+                "Test Suite Started"
+        );
+    }
+
+
+    // ============================================================
+    // BEFORE TEST
+    // ============================================================
+
+    /*
+     * @BeforeTest runs before the <test> tag
+     * in testng.xml.
+     *
+     * It runs before the tests inside that <test> block.
+     */
+
+    @BeforeTest
+    public void beforeTest() {
+
+        System.out.println(
+                "========== BEFORE TEST =========="
+        );
+
+        System.out.println(
+                "Test block started"
+        );
+    }
+
+
+    // ============================================================
+    // BEFORE CLASS
+    // ============================================================
+
+    /*
+     * @BeforeClass runs ONCE before the first @Test
+     * method of this Java class.
+     */
+
+    @BeforeClass
+    public void beforeClass() {
+
+        System.out.println(
+                "========== BEFORE CLASS =========="
+        );
+
+        System.out.println(
+                "ClientAppTest class started"
+        );
+    }
+
+
+    // ============================================================
+    // BEFORE METHOD
+    // ============================================================
+
+    /*
+     * @BeforeMethod runs BEFORE EVERY @Test method.
+     *
+     * Since we are using Excel DataProvider with 2 rows,
+     * the @Test executes 2 times.
+     *
+     * Therefore @BeforeMethod also runs 2 times.
+     *
+     * Execution:
+     *
+     * @BeforeMethod
+     *      ↓
+     * @Test - Excel Row 1
+     *
+     * @AfterMethod
+     *
+     * @BeforeMethod
+     *      ↓
+     * @Test - Excel Row 2
+     *
+     * @AfterMethod
+     */
+
+    @BeforeMethod
+    public void setUp() {
+
+        System.out.println(
+                "========== BEFORE METHOD =========="
+        );
+
+        System.out.println(
+                "Opening Chrome browser"
+        );
+
+
+        // Create Chrome browser
+        driver = new ChromeDriver();
+
+
+        // Maximize browser
+        driver.manage()
+                .window()
+                .maximize();
+
+
+        // Create explicit wait
+        wait = new WebDriverWait(
+                driver,
+                Duration.ofSeconds(15)
+        );
+
+
+        // Open application
+        driver.get(
+                "https://rahulshettyacademy.com/client"
+        );
+
+
+        System.out.println(
+                "Application opened"
+        );
+    }
+
+
+    // ============================================================
+    // DATA PROVIDER
+    // ============================================================
+
+    /*
+     * @DataProvider provides test data to @Test.
+     *
+     * Our Excel contains:
+     *
+     * ProductName | Email | Password
+     *
+     * Row 1:
+     * ZARA COAT 3 | email | password
+     *
+     * Row 2:
+     * iphone 13 pro | email | password
+     *
+     * Therefore TestNG executes our test TWO times.
+     */
+
+    @DataProvider(name = "excelData")
+    public Object[][] getData() throws Exception {
+
+        System.out.println(
+                "Reading data from Excel"
+        );
+
+        return ExcelUtils.getData();
+    }
+
+
+    // ============================================================
+    // TEST
+    // ============================================================
+
+    /*
+     * @Test is the actual test case.
+     *
+     * dataProvider = "excelData"
+     * means:
+     *
+     * Take the data from getData()
+     * and pass it to this test method.
+     */
+
+    @Test(dataProvider = "excelData")
+    public void clientAppTest(
+            String productName,
+            String emailValue,
+            String passwordValue) {
+
+
+        System.out.println(
+                "======================================"
+        );
+
+        System.out.println(
+                "TEST STARTED"
+        );
+
+        System.out.println(
+                "Product: " + productName
+        );
+
+        System.out.println(
+                "Email: " + emailValue
+        );
+
+
+        // ========================================================
+        // LOGIN
+        // ========================================================
+
+        System.out.println(
+                "Entering email"
+        );
+
+        driver.findElement(email)
+                .sendKeys(emailValue);
+
+
+        System.out.println(
+                "Entering password"
+        );
+
+        driver.findElement(password)
+                .sendKeys(passwordValue);
+
+
+        System.out.println(
+                "Clicking Login"
+        );
+
+        driver.findElement(loginButton)
+                .click();
+
+
+        // ========================================================
+        // WAIT 3 SECONDS AFTER LOGIN
+        // ========================================================
+
+        /*
+         * We wait 3 seconds so that you can see
+         * the logged-in dashboard before taking
+         * the screenshot.
+         */
+
+        try {
+
+            Thread.sleep(3000);
+
+        } catch (InterruptedException e) {
+
+            e.printStackTrace();
+        }
+
+
+        // ========================================================
+        // TAKE SCREENSHOT
+        // ========================================================
+
+        System.out.println(
+                "Taking screenshot for: "
+                        + productName
+        );
+
+
+        /*
+         * TakesScreenshot allows Selenium
+         * to capture the current browser screen.
+         */
+
+        TakesScreenshot screenshot =
+                (TakesScreenshot) driver;
+
+
+        /*
+         * getScreenshotAs()
+         *
+         * captures the screenshot temporarily.
+         */
+
+        File source =
+                screenshot.getScreenshotAs(
+                        OutputType.FILE
+                );
+
+
+        /*
+         * Create the final screenshot location.
+         *
+         * Example:
+         *
+         * ZARA_COAT_3.png
+         *
+         * iphone_13_pro.png
+         */
+
+        File destination =
+                new File(
+                        "C:\\Users\\heman\\OneDrive\\Desktop\\application_Data\\screenshots\\"
+                                + productName.replace(" ", "_")
+                                + ".png"
+                );
+
+
+        // Copy screenshot to our folder
+
+        try {
+
+            Files.copy(
+                    source.toPath(),
+                    destination.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+
+        System.out.println(
+                "Screenshot completed for: "
+                        + productName
+        );
+
+
+        // ========================================================
+        // FIND PRODUCTS
+        // ========================================================
+
+        /*
+         * After login, products may take some time
+         * to appear on the dashboard.
+         *
+         * Therefore we wait up to 15 seconds.
+         */
+
+        List<WebElement> productList =
+                wait.until(
+                        ExpectedConditions
+                                .visibilityOfAllElementsLocatedBy(
+                                        products
+                                )
+                );
+
+
+        System.out.println(
+                "Products found: "
+                        + productList.size()
+        );
+
+
+        // ========================================================
+        // FIND REQUIRED PRODUCT
+        // ========================================================
+
+        for (WebElement product : productList) {
+
+
+            System.out.println(
+                    "Product card:"
+            );
+
+            System.out.println(
+                    product.getText()
+            );
+
+
+            /*
+             * Inside each card:
+             *
+             * <h5>
+             *     <b>ADIDAS ORIGINAL</b>
+             * </h5>
+             *
+             * We get the product name.
+             */
+
+            String productTitle =
+                    product.findElement(
+                            By.cssSelector("h5 b")
+                    )
+                    .getText()
+                    .trim();
+
+
+            System.out.println(
+                    "Product found: "
+                            + productTitle
+            );
+
+
+            // ====================================================
+            // COMPARE PRODUCT
+            // ====================================================
+
+            /*
+             * Compare Excel product name
+             * with website product name.
+             */
+
+            if (productTitle.equalsIgnoreCase(
+                    productName
+            )) {
+
+
+                // =================================================
+                // ADD TO CART
+                // =================================================
+
+                /*
+                 * The second button is
+                 * Add To Cart.
+                 */
+
+                product.findElement(
+                        By.cssSelector(
+                                "button:nth-of-type(2)"
+                        )
+                )
+                .click();
+
+
+                System.out.println(
+                        "Product added to cart: "
+                                + productName
+                );
+
+
+                // Product found, so stop the loop
+
+                break;
+            }
+        }
+
+
+        System.out.println(
+                "TEST COMPLETED"
+        );
+
+        System.out.println(
+                "======================================"
+        );
+    }
+
+
+    // ============================================================
+    // AFTER METHOD
+    // ============================================================
+
+    /*
+     * @AfterMethod runs AFTER EVERY @Test.
+     *
+     * Because Excel has 2 rows:
+     *
+     * Test 1 → @AfterMethod
+     * Test 2 → @AfterMethod
+     *
+     * We close the browser after each test.
+     */
+
+    @AfterMethod
+    public void tearDown() {
+
+        System.out.println(
+                "========== AFTER METHOD =========="
+        );
+
+        System.out.println(
+                "Closing browser"
+        );
+
+
+        if (driver != null) {
+
+            driver.quit();
+        }
+
+
+        System.out.println(
+                "Browser closed"
+        );
+    }
+
+
+    // ============================================================
+    // AFTER CLASS
+    // ============================================================
+
+    /*
+     * @AfterClass runs ONCE after all @Test methods
+     * in this Java class are completed.
+     */
+
+    @AfterClass
+    public void afterClass() {
+
+        System.out.println(
+                "========== AFTER CLASS =========="
+        );
+
+        System.out.println(
+                "ClientAppTest class completed"
+        );
+    }
+
+
+    // ============================================================
+    // AFTER TEST
+    // ============================================================
+
+    /*
+     * @AfterTest runs after the <test> tag
+     * in testng.xml has completed.
+     */
+
+    @AfterTest
+    public void afterTest() {
+
+        System.out.println(
+                "========== AFTER TEST =========="
+        );
+
+        System.out.println(
+                "Test block completed"
+        );
+    }
+
+
+    // ============================================================
+    // AFTER SUITE
+    // ============================================================
+
+    /*
+     * @AfterSuite runs ONCE after the entire TestNG suite
+     * has completed.
+     */
+
+    @AfterSuite
+    public void afterSuite() {
+
+        System.out.println(
+                "========== AFTER SUITE =========="
+        );
+
+        System.out.println(
+                "Test Suite Completed"
+        );
+    }
+}
+

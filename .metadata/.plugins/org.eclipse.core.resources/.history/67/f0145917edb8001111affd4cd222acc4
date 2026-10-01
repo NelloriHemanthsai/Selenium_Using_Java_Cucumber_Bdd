@@ -1,0 +1,76 @@
+package com.redbus.tests;
+
+
+
+import com.redbus.pages.LoginPage;
+import com.redbus.pages.DashboardPage;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.testng.Assert;
+import org.testng.annotations.*;
+
+public class ClientAppTest {
+
+    private WebDriver driver;
+
+    private LoginPage loginPage;
+    private DashboardPage dashboardPage;
+  
+    @BeforeMethod
+    public void setUp() {
+
+        driver =
+                new ChromeDriver();
+
+        driver.manage()
+                .window()
+                .maximize();
+
+        driver.get(
+                "https://rahulshettyacademy.com/client"
+        );
+
+
+        loginPage =
+                new LoginPage(driver);
+        
+        dashboardPage =
+                new DashboardPage(driver);
+    }
+    
+    @Test
+    public void clientAppTest() {
+
+        String email =
+                "hnellori@gmail.com";
+
+        String password =
+                "Hemu@1234";
+
+        String productName =
+                "ZARA COAT 3";
+
+        String country =
+                "India";
+
+
+        // LOGIN
+
+        loginPage.login(
+                email,
+                password
+        );
+        
+    }
+    
+//    @AfterMethod
+//    public void tearDown() {
+//
+//        if (driver != null) {
+//
+//            driver.quit();
+//        }
+//    }
+}

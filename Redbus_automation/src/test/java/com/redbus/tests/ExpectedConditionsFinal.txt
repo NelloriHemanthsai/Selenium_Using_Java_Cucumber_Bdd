@@ -1,0 +1,29 @@
+VISIBLE
+→ visibilityOfElementLocated()
+
+VISIBLE MANY
+→ visibilityOfAllElementsLocatedBy()
+
+EXISTS
+→ presenceOfElementLocated()
+
+EXISTS MANY
+→ presenceOfAllElementsLocatedBy()
+
+CLICK
+→ elementToBeClickable()
+
+DISAPPEAR
+→ invisibilityOfElementLocated()
+
+TEXT
+→ textToBePresentInElementLocated()
+
+TITLE
+→ titleContains() / titleIs()
+
+URL
+→ urlContains() / urlToBe()
+
+ALERT
+→ alertIsPresent()

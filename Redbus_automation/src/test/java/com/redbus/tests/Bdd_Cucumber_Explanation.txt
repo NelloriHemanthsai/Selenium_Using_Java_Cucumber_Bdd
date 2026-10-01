@@ -1,0 +1,82 @@
+| Term             | Meaning                                          |
+| ---------------- | ------------------------------------------------ |
+| BDD              | Development/testing approach focused on behavior |
+| Cucumber         | Tool used to implement BDD                       |
+| Gherkin          | Language used in `.feature` files                |
+| Feature          | Functionality being tested                       |
+| Scenario         | One test case                                    |
+| Given            | Precondition                                     |
+| When             | Action                                           |
+| Then             | Expected result                                  |
+| And              | Additional step                                  |
+| Step Definition  | Java implementation of a Gherkin step            |
+| Runner           | Starts Cucumber tests                            |
+| Hooks            | Before/after test setup and cleanup              |
+| Background       | Common Given steps                               |
+| Scenario Outline | Data-driven scenario                             |
+| Examples         | Test data for Scenario Outline                   |
+
+
+1. What is BDD?
+
+BDD = Behavior Driven Development
+
+Don't try to remember the definition like a textbook.
+
+Think:
+
+BDD means describing what the application should do from the user's/business point of view.
+
+For example, your current Java code says:
+
+driver.findElement(By.id("userEmail")).sendKeys("hnellori@gmail.com");
+driver.findElement(By.id("userPassword")).sendKeys("Hemu@1234");
+driver.findElement(By.cssSelector("[value='Login']")).click();
+
+A business person doesn't care about:
+
+By.id()
+CSS selectors
+WebDriver
+ChromeDriver
+sendKeys()
+
+They care about:
+
+User logs into the application.
+
+So BDD changes the description to:
+
+Given the user is on the login page
+When the user enters valid login credentials
+And clicks the login button
+Then the products page should be displayed
+
+2. What is Cucumber?
+
+Cucumber is a tool/framework that allows us to implement BDD scenarios.
+
+Cucumber lets us write scenarios using a language called Gherkin.
+
+For example:
+
+Feature: Product purchase
+
+Scenario: User adds a product to cart
+
+Given the user is on the login page
+When the user logs in with valid credentials
+And selects "ZARA COAT 3"
+And adds the product to the cart
+And proceeds to checkout
+Then the checkout page should be displayed
+
+This is readable by:
+
+QA
+Developers
+Business analysts
+Product owners
+Managers
+
+And eventually each sentence connects to Java code.

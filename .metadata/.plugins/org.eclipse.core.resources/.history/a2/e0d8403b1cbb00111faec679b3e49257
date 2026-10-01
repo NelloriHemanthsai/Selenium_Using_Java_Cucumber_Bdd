@@ -1,0 +1,89 @@
+package com.redbus.stepdefinitions;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+
+public class LoginSteps {
+
+    // WebDriver object
+    WebDriver driver;
+
+
+    // ============================================================
+    // GIVEN
+    // ============================================================
+
+    @Given("the user is on the login page")
+    public void userIsOnLoginPage() {
+
+        // Launch Chrome browser
+        driver = new ChromeDriver();
+
+        // Maximize browser
+        driver.manage().window().maximize();
+
+        // Implicit wait
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+        // Open login page
+        driver.get("https://rahulshettyacademy.com/client");
+
+        System.out.println("Login page opened");
+    }
+
+
+    // ============================================================
+    // WHEN
+    // ============================================================
+
+    @When("the user enters valid login credentials")
+    public void userEntersValidLoginCredentials() {
+
+        // Enter email
+        driver.findElement(By.id("userEmail"))
+                .sendKeys("hnellori@gmail.com");
+
+        // Enter password
+        driver.findElement(By.id("userPassword"))
+                .sendKeys("Hemu@1234");
+
+        // Click Login
+        driver.findElement(By.cssSelector("[value='Login']"))
+                .click();
+
+        System.out.println("Valid login credentials entered");
+    }
+
+
+    // ============================================================
+    // THEN
+    // ============================================================
+
+    @Then("the user should be logged in successfully")
+    public void userShouldBeLoggedInSuccessfully() {
+
+        // Check that we moved away from the login page
+        String currentUrl = driver.getCurrentUrl();
+
+        System.out.println("Current URL: " + currentUrl);
+
+        // Simple validation
+        Assert.assertNotEquals(
+                currentUrl,
+                "https://rahulshettyacademy.com/client"
+        );
+
+        System.out.println("User logged in successfully");
+
+        // Close browser
+        driver.quit();
+    }
+}

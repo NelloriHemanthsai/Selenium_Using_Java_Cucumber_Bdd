@@ -1,0 +1,52 @@
+package com.redbus.tests;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class LoginPage extends BasePage {
+
+    private By username =
+            By.id("username");
+
+    private By password =
+            By.id("password");
+
+    private By loginButton =
+            By.id("login");
+
+    public LoginPage(WebDriver driver) {
+
+        super(driver);
+    }
+
+    public void enterUsername(String usernameValue) {
+
+        driver.findElement(username)
+                .sendKeys(usernameValue);
+    }
+
+    public void enterPassword(String passwordValue) {
+
+        driver.findElement(password)
+                .sendKeys(passwordValue);
+    }
+
+    public HomePage clickLogin() {
+
+        driver.findElement(loginButton)
+                .click();
+
+        return new HomePage(driver);
+    }
+
+    public HomePage login(
+            String usernameValue,
+            String passwordValue) {
+
+        enterUsername(usernameValue);
+
+        enterPassword(passwordValue);
+
+        return clickLogin();
+    }
+}

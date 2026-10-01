@@ -1,0 +1,37 @@
+package com.redbus.tests;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+public class LoginPage {
+
+    private WebDriver driver;
+
+    private By email =
+            By.id("userEmail");
+
+    private By password =
+            By.id("userPassword");
+
+    private By loginButton =
+            By.cssSelector("[value='Login']");
+
+
+    public LoginPage(WebDriver driver) {
+
+        this.driver = driver;
+    }
+
+
+    public void login(String emailValue, String passwordValue) {
+
+        driver.findElement(email)
+                .sendKeys(emailValue);
+
+        driver.findElement(password)
+                .sendKeys(passwordValue);
+
+        driver.findElement(loginButton)
+                .click();
+    }
+}

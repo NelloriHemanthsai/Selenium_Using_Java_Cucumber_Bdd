@@ -1,0 +1,56 @@
+7. textToBePresentInElementLocated()
+
+Wait until an element contains specific text.
+wait.until(
+    ExpectedConditions.textToBePresentInElementLocated(
+        By.id("message"),
+        "Success"
+    )
+);
+
+8. titleContains()
+
+Wait until the browser title contains some text.
+
+wait.until(
+    ExpectedConditions.titleContains("Amazon")
+);
+
+9. titleIs()
+
+Wait until the title exactly matches.
+
+wait.until(
+    ExpectedConditions.titleIs("Let's Shop")
+);
+
+10. urlContains()
+
+Wait until the URL contains specific text.
+
+wait.until(
+    ExpectedConditions.urlContains("dashboard")
+);
+
+
+11. urlToBe()
+
+Wait until the URL exactly matches.
+
+wait.until(
+    ExpectedConditions.urlToBe(
+        "https://example.com/dashboard"
+    )
+);
+
+
+12. alertIsPresent()
+
+Wait until a JavaScript alert appears.
+
+wait.until(
+    ExpectedConditions.alertIsPresent()
+);
+
+driver.switchTo().alert().accept();
+

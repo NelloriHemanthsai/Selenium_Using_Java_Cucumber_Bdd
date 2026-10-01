@@ -1,0 +1,181 @@
+```java
+package com.redbus.tests;
+
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
+public class AssertionTest {
+
+    WebDriver driver;
+
+    @BeforeMethod
+    public void setup() {
+
+        driver = new ChromeDriver();
+
+        driver.manage().window().maximize();
+
+        driver.manage().timeouts()
+                .implicitlyWait(Duration.ofSeconds(10));
+
+        driver.get("https://rahulshettyacademy.com/client");
+    }
+
+    @Test
+    public void loginAndValidateApplication() {
+
+        String actualTitle = driver.getTitle();
+
+        Assert.assertEquals(
+                actualTitle,
+                "Let's Shop",
+                "Page title is incorrect"
+        );
+
+        WebElement email =
+                driver.findElement(By.id("userEmail"));
+
+        Assert.assertNotNull(
+                email,
+                "Email field was not found"
+        );
+
+        email.sendKeys("your_email");
+
+        WebElement password =
+                driver.findElement(By.id("userPassword"));
+
+        password.sendKeys("your_password");
+
+        WebElement loginButton =
+                driver.findElement(By.cssSelector("[value='Login']"));
+
+        Assert.assertTrue(
+                loginButton.isDisplayed(),
+                "Login button is not displayed"
+        );
+
+        Assert.assertTrue(
+                loginButton.isEnabled(),
+                "Login button is disabled"
+        );
+
+        loginButton.click();
+
+        SoftAssert softAssert = new SoftAssert();
+
+        String currentUrl = driver.getCurrentUrl();
+
+        softAssert.assertTrue(
+                currentUrl.contains("dashboard"),
+                "Dashboard URL is incorrect"
+        );
+
+        WebElement productSection =
+                driver.findElement(By.cssSelector(".card-body"));
+
+        softAssert.assertTrue(
+                productSection.isDisplayed(),
+                "Product section is not displayed"
+        );
+
+        String productName =
+                productSection
+                        .findElement(By.cssSelector("h5 b"))
+                        .getText();
+
+        softAssert.assertNotNull(
+                productName,
+                "Product name is null"
+        );
+
+        softAssert.assertNotEquals(
+                productName,
+                "",
+                "Product name is empty"
+        );
+
+        softAssert.assertEquals(
+                productName,
+                "ADIDAS ORIGINAL",
+                "Incorrect product name"
+        );
+
+        boolean loginPageDisplayed =
+                driver.findElements(By.id("userEmail"))
+                        .size() > 0;
+
+        softAssert.assertFalse(
+                loginPageDisplayed,
+                "Login page is still displayed"
+        );
+
+        String product1 = productName;
+        String product2 = productName;
+
+        softAssert.assertSame(
+                product1,
+                product2,
+                "Objects are not the same"
+        );
+
+        String anotherProduct =
+                new String("ADIDAS ORIGINAL");
+
+        softAssert.assertNotSame(
+                product1,
+                anotherProduct,
+                "Objects are unexpectedly same"
+        );
+
+        String testObject = null;
+
+        softAssert.assertNull(
+                testObject,
+                "Object is not null"
+        );
+
+        softAssert.assertAll();
+    }
+
+    @AfterMethod
+    public void tearDown() {
+
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}
+```
+
+### Assertions covered
+
+```text
+assertEquals()
+assertNotEquals()
+assertTrue()
+assertFalse()
+assertNull()
+assertNotNull()
+assertSame()
+assertNotSame()
+```
+
+And both:
+
+```text
+Assert       → Hard Assertion
+SoftAssert   → Soft Assertion
+```
+
+**Important:** `softAssert.assertAll()` must be at the end.

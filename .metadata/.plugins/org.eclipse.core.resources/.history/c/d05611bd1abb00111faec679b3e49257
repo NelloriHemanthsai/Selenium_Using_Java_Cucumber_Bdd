@@ -1,0 +1,21 @@
+package com.redbus.tests;
+
+import io.cucumber.testng.AbstractTestNGCucumberTests;
+import io.cucumber.testng.CucumberOptions;
+
+@CucumberOptions(
+
+        // Where the feature files are located
+        features = "src/test/resources/features",
+
+        // Package where Step Definitions will be created
+        glue = "com.redbus.tests",
+
+        // Display Cucumber execution nicely
+        plugin = "pretty",
+
+        monochrome = true
+)
+public class TestRunner extends AbstractTestNGCucumberTests {
+
+}

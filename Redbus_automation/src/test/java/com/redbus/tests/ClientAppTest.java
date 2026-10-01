@@ -1,0 +1,126 @@
+package com.redbus.tests;
+
+import com.redbus.pages.LoginPage;
+import com.redbus.pages.DashboardPage;
+import com.redbus.utils.ExcelUtils;
+
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.testng.annotations.*;
+
+public class ClientAppTest {
+
+    private WebDriver driver;
+
+    private LoginPage loginPage;
+    private DashboardPage dashboardPage;
+
+
+    @BeforeMethod
+    public void setUp() {
+
+        driver = new ChromeDriver();
+
+        driver.manage()
+                .window()
+                .maximize();
+
+        driver.get(
+                "https://rahulshettyacademy.com/client"
+        );
+
+        loginPage =
+                new LoginPage(driver);
+
+        dashboardPage =
+                new DashboardPage(driver);
+    }
+
+
+    @DataProvider(name = "excelData")
+    public Object[][] getData() throws Exception {
+
+        return ExcelUtils.getData();
+    }
+
+
+    @Test(dataProvider = "excelData")
+    public void clientAppTest(
+            String productName,
+            String email,
+            String password) {
+
+
+        System.out.println(
+                "Product: " + productName
+        );
+
+        System.out.println(
+                "Email: " + email
+        );
+
+
+        // LOGIN
+
+        loginPage.login(
+                email,
+                password
+        );
+        
+        // Wait 3 seconds after login
+        try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        System.out.println("Taking screenshot for: " + productName);
+        
+        // Take screenshot after login
+        TakesScreenshot screenshot = (TakesScreenshot) driver;
+
+        File source = screenshot.getScreenshotAs(OutputType.FILE);
+
+        File destination = new File(
+                "C:\\Users\\heman\\OneDrive\\Desktop\\application_Data\\screenshots\\"
+                + productName.replace(" ", "_") + ".png"
+            );
+        
+        
+        try {
+			Files.copy(
+			        source.toPath(),
+			        destination.toPath(),
+			        StandardCopyOption.REPLACE_EXISTING
+			);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+        System.out.println("Screenshot completed for: " + productName);
+        // ADD PRODUCT
+
+        dashboardPage.addProductToCart(
+                productName
+        );
+    }
+
+
+//    @AfterMethod
+//    public void tearDown() {
+//
+//        driver.quit();
+//    }
+}
