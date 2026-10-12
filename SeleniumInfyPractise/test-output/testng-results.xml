@@ -2,20 +2,20 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2026-10-09T13:38:51 IST" name="Default suite" finished-at="2026-10-09T13:38:54 IST" duration-ms="3614">
+  <suite started-at="2026-10-12T13:23:21 IST" name="Default suite" finished-at="2026-10-12T13:23:42 IST" duration-ms="20425">
     <groups>
     </groups>
-    <test started-at="2026-10-09T13:38:51 IST" name="Default test" finished-at="2026-10-09T13:38:54 IST" duration-ms="3614">
+    <test started-at="2026-10-12T13:23:21 IST" name="Default test" finished-at="2026-10-12T13:23:42 IST" duration-ms="20425">
       <class name="com.infy.tests.infyPractiseTest1">
-        <test-method is-config="true" signature="launchingBrowser()[pri:0, instance:com.infy.tests.infyPractiseTest1@79079097]" started-at="2026-10-09T13:38:51 IST" name="launchingBrowser" finished-at="2026-10-09T13:38:51 IST" duration-ms="5" status="PASS">
+        <test-method is-config="true" signature="launchingBrowser()[pri:0, instance:com.infy.tests.infyPractiseTest1@79079097]" started-at="2026-10-12T13:23:21 IST" name="launchingBrowser" finished-at="2026-10-12T13:23:21 IST" duration-ms="6" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- launchingBrowser -->
-        <test-method is-config="true" signature="launchingChromeBroswer()[pri:0, instance:com.infy.tests.infyPractiseTest1@79079097]" started-at="2026-10-09T13:38:51 IST" name="launchingChromeBroswer" finished-at="2026-10-09T13:38:53 IST" duration-ms="1663" status="PASS">
+        <test-method is-config="true" signature="launchingChromeBroswer()[pri:0, instance:com.infy.tests.infyPractiseTest1@79079097]" started-at="2026-10-12T13:23:21 IST" name="launchingChromeBroswer" finished-at="2026-10-12T13:23:24 IST" duration-ms="3140" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- launchingChromeBroswer -->
-        <test-method signature="test()[pri:1, instance:com.infy.tests.infyPractiseTest1@79079097]" started-at="2026-10-09T13:38:53 IST" name="test" finished-at="2026-10-09T13:38:54 IST" duration-ms="1903" status="PASS">
+        <test-method signature="test()[pri:1, instance:com.infy.tests.infyPractiseTest1@79079097]" started-at="2026-10-12T13:23:24 IST" name="test" finished-at="2026-10-12T13:23:42 IST" duration-ms="17210" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- test -->
